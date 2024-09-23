@@ -9,7 +9,7 @@
 docker compose build && docker compose up -d
 
 # Install composer deps
-docker compose exec backend composer install 
+docker compose exec backend composer install
 
 # Make migration
 docker compose exec backend bin/console doctrine:migrations:migrate --no-interaction
@@ -17,8 +17,11 @@ docker compose exec backend bin/console doctrine:migrations:migrate --no-interac
 # Run fixture
 docker compose exec backend bin/console doctrine:fixtures:load --no-interaction
 
+# Instal node modules
+docker compose exec backend npm i
+
 # Add build
-docker compose exec backend npm run build
+docker compose exec backend  npm run build
 
 # API Documentation
 
@@ -29,18 +32,18 @@ docker compose exec backend npm run build
 **Request Body:**
 ```json
 {
-    "name": "New Carrier",
-    "carrierPriceRules": [
-        {
-            "type": "fixed",
-            "fixedPrice": 20,
-            "weightLimit": 10
-        },
-        {
-            "type": "per_kg",
-            "pricePerKg": 5
-        }
-    ]
+  "name": "New Carrier",
+  "carrierPriceRules": [
+    {
+      "type": "fixed",
+      "fixedPrice": 20,
+      "weightLimit": 10
+    },
+    {
+      "type": "per_kg",
+      "pricePerKg": 5
+    }
+  ]
 }
 ```
 
@@ -76,8 +79,8 @@ docker compose exec backend npm run build
 **Request Body:**
 ```json
 {
-    "weight": 10,
-    "carrier": 1
+  "weight": 10,
+  "carrier": 1
 }
 ```
 
@@ -91,18 +94,18 @@ docker compose exec backend npm run build
 **Example Response:**
 ```json
 [
-    {
-        "id": 1,
-        "weight": 10,
-        "carrier": 1,
-        "cost": 50
-    },
-    {
-        "id": 2,
-        "weight": 5,
-        "carrier": 2,
-        "cost": 30
-    }
+  {
+    "id": 1,
+    "weight": 10,
+    "carrier": 1,
+    "cost": 50
+  },
+  {
+    "id": 2,
+    "weight": 5,
+    "carrier": 2,
+    "cost": 30
+  }
 ]
 ```
 #Test
