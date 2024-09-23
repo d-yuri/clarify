@@ -2,6 +2,7 @@
 
 namespace App\Service\CarrierCalculator;
 
+use App\Entity\Carrier;
 use App\Repository\CarrierPriceRuleRepository;
 use App\Service\CarrierCalculatorInterface;
 
@@ -13,13 +14,17 @@ abstract class AbstractCalculator implements CarrierCalculatorInterface
 
     public function calculate(int $weight): int
     {
-        $reflect = new \ReflectionClass($this);
-        $carrier = $this->carrierRepository->getPriceByCarrierNameAndWeight($reflect->getShortName(), $weight);
+        $carrier = $this->carrierRepository->getPriceByCarrierNameAndWeight($this->carrier, $weight);
 
         if ($carrier->getPricePerKg()) {
             return $carrier->getPricePerKg() * $weight;
         } else {
             return $carrier->getFixedPrice();
         }
+    }
+
+    public function setCarrier(Carrier $carrier): void
+    {
+        $this->carrier = $carrier;
     }
 }

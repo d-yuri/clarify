@@ -48,6 +48,7 @@ final class PackageController extends AbstractController
             try {
                 $package = $packageService->createPackage($createPackageDTO);
             } catch (\Throwable $e) {
+                dd($e);
                 return new JsonResponse(['errors' => ['message' => 'Error on create']], Response::HTTP_BAD_REQUEST);
             }
 

@@ -2,6 +2,6 @@
 
 namespace App\Service\CarrierCalculator;
 
-class TransCompany extends AbstractCalculator
+class TransCompany extends BaseCalculator
 {
 }

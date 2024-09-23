@@ -2,7 +2,6 @@
 
 namespace App\Service\CarrierCalculator;
 
-
-class PackGroup extends AbstractCalculator
+class BaseCalculator extends AbstractCalculator
 {
 }

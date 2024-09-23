@@ -19,7 +19,7 @@ class CarrierPriceRuleRepository extends ServiceEntityRepository
         parent::__construct($registry, CarrierPriceRule::class);
     }
 
-    public function getPriceByCarrierNameAndWeight(string $carrierName, int $weight): ?CarrierPriceRule
+    public function getPriceByCarrierNameAndWeight(Carrier $carrier, int $weight): ?CarrierPriceRule
     {
         $qb = $this->createQueryBuilder('cp');
         $flatSearch = $qb->expr()->orX(
@@ -30,12 +30,13 @@ class CarrierPriceRuleRepository extends ServiceEntityRepository
 
         $qb->where($qb->expr()->orX($flatSearch, $perKgSearch))
             ->join('cp.carrier', 'c')
-            ->andWhere($qb->expr()->eq('c.name', ':carrierName'));
+            ->andWhere($qb->expr()->eq('c', ':carrier'));
 
         $qb->setParameter('weight', $weight)
-            ->setParameter('carrierName', $carrierName);
+            ->setParameter('carrier', $carrier);
         $qb->setMaxResults(1);
+        $qb->addOrderBy('cp.weightLimit');
 
-       return $qb->getQuery()->getOneOrNullResult();
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }

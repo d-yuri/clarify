@@ -11,15 +11,20 @@ class CarrierCalculatorResolver
     public function __construct(private readonly ServiceLocator $calculators)
     {
     }
+
     public function getCalculator(Carrier $carrier): CarrierCalculatorInterface
     {
         $carrierName = $carrier->getName();
-        $className = "App\\Service\\CarrierCalculator\\{$carrierName}";
+        $classNamePath = "App\\Service\\CarrierCalculator\\%s";
+        $className = sprintf($classNamePath, $carrierName);
 
         if ($this->calculators->has($className)) {
             return $this->calculators->get($className);
-        }
+        } else {
+            $defaultClass = 'BaseCalculator';
+            $className = sprintf($classNamePath, $defaultClass);
 
-        throw new \LogicException('Calculator for carrier not found');
+            return $this->calculators->get($className);
+        }
     }
 }

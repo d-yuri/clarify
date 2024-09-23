@@ -15,6 +15,7 @@ class CarrierCalculator
     public function calculate(CreatePackageDTO $createPackageDTO): int
     {
         $calculator = $this->carrierCalculatorResolver->getCalculator($createPackageDTO->carrier);
+        $calculator->setCarrier($createPackageDTO->carrier);
 
         return $calculator->calculate($createPackageDTO->weight);
     }
